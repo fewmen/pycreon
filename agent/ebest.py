@@ -141,6 +141,16 @@ class XAQuery:
         print("OnreceiveMessage", error, code, message)
 
 
+class Field:
+    t1101 = {
+        "t1101OutBlock":{
+            "hname":"한글명",
+            "price":"현재가",
+            "sign":"전일대비구문",
+            
+        }
+    }
+
 
 
 
