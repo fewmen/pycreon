@@ -1,6 +1,5 @@
 import configparser
 from dataclasses import Field
-from statistics import mode
 import win32com.client
 import pythoncom
 import time
@@ -141,16 +140,19 @@ class XAQuery:
         print("OnreceiveMessage", error, code, message)
 
 
-class Field:
-    t1101 = {
-        "t1101OutBlock":{
-            "hname":"한글명",
-            "price":"현재가",
-            "sign":"전일대비구문",
-            
-        }
-    }
+    def get_code_list(self, market=None):
+        """
+        TR : t8436 kospi, kosdaq 종목 리스트를 가져온다
+        :param market:str 전체(0), 코스피(1), 코스닥(2)
+        :param result:list 시장별 종목 리스트
+        """
+        if market != "ALL" and market != "KOSPI" and market != "KOSDAQ":
+            raise Exception("Need to have parameter of markret name! (All, KOSPI, KOSDAQ)")
 
+        market_code = {"ALL":"0", "KOSPI":"1", "KOSDAQ":"2"}
+        in_params = {"gubun":"market_code[market]"}
+        out_param = 'hname', 'shcode', 'expcode', 'etfgubun', 'memedan', 'gubun', 'spac_gubun']
+        
 
 
 
