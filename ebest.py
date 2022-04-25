@@ -4,7 +4,7 @@ import win32com.client
 import pythoncom
 import time
 from datetime import datetime
-
+import fields
 
 class XASession:
 
@@ -28,9 +28,7 @@ class XASession:
         
 
 class EBest:
-
     def __init__(self, mode=None):
-        
         self.query_cnt = []
         """
         모의서버 DEMO
@@ -41,14 +39,13 @@ class EBest:
 
         run_mode = "EBEST_" + mode
         config = configparser.ConfigParser()
-        config.read("conf\\config.ini")
+        config.read("config.ini")
         self.user = config[run_mode]['user']
         self.password = config[run_mode]['password']
         self.cert_passwd = config[run_mode]['cert_passwd']
         self.host = config[run_mode]['host']
         self.port = config[run_mode]['port']
         self.account = config[run_mode]['account']
-
         self.xa_session_client = win32com.client.DispatchWithEvents("XA_Session.XASession", XASession)
 
     def get_code_list(self, market=None):
@@ -57,14 +54,12 @@ class EBest:
         :param market:str 전체(0), 코스피(1), 코스닥(2)
         return result:list 시장별 종목 리스트
         """
-
         if market != "ALL" and market != "KOSPI" and market != "KOSDAQ":
             raise Exception("Need to market param(ALL, KOSPI, KOSDAQ")
-
         market_code = {"ALL":"0", "KOSPI":"1", "KOSDAQ":"2"}
         in_params = {"gubun":market_code[market]}
         out_params = ['hname', 'shcode', 'expcode', 'etfgubun', 'memedan', 'gubun', 'spac_gubun']
-        result = self._execute_query("t8436",
+        result = self._execute_query(fields.t8436,
                                         "t8436InBlock",
                                         "t8436OutBlock",
                                         *out_params,
@@ -136,7 +131,7 @@ class EBest:
 
     def login(self):
         self.xa_session_client.ConnectServer(self.host, self.port)
-        self.xa_session_client.Login(self.user, self.passwd, self.cert_passwd, 0, 0)
+        self.xa_session_client.Login(self.user, self.password, self.cert_passwd, 0, 0)
         while XASession.login_state == 0:
             pythoncom.PumpWaitingMessages()
 
@@ -174,7 +169,7 @@ class XAQuery:
 
         market_code = {"ALL":"0", "KOSPI":"1", "KOSDAQ":"2"}
         in_params = {"gubun":"market_code[market]"}
-        out_param = 'hname', 'shcode', 'expcode', 'etfgubun', 'memedan', 'gubun', 'spac_gubun']
+        out_param = ['hname', 'shcode', 'expcode', 'etfgubun', 'memedan', 'gubun', 'spac_gubun']
         
 
 

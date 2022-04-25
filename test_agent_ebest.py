@@ -1,12 +1,12 @@
 import unittest
-from ..agent import ebest
+from ebest import *
 import inspect
 import time
 
 
 class TestEBest(unittest.TestCase):
     def setUp(self):
-        self.ebest = ebest("DEMO")
+        self.ebest = EBest("DEMO")
         self.ebest.login()
 
     def tearDown(self):
@@ -27,10 +27,4 @@ class TestEBest(unittest.TestCase):
 
         assert error_result is None
         print("result:", len(all_result), len(kosdaq_result), len(kospi_result))
-
-
-if __name__ == '__main__':
-    test = TestEBest()
-    test.setUp()
-    test.tearDown()
 
